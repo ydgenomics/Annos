@@ -1,0 +1,2 @@
+EntityID,input_query_rds,input_query_fa,input_ref_rds,input_ref_fa,ref_cluster_key,umap_name,whether_protein,mem_alignment,mem_singler
+yd_test,,,,,,,,,
