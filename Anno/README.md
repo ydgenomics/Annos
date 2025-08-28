@@ -11,7 +11,7 @@
   - `input_file` Array[File] 待注释的文件(.rds/.h5ad)且包含分群的键(与`input_csv`第一列列名一致)
   - `input_csv` Array[File] 分群和细胞类型对应关系，第一列列名为分群的键名，第二列列名为即将添加到meta.data的键
   - `reduction_key` Array[String] 可视化umap的键名，其中Seurat方法可视化键要强一致，scanpy的umap对应.obsm['X_umap']
-- **Example** [download]()
+- **Example** [download](https://github.com/ydgenomics/Annos/blob/main/Anno/v1.0.0/Anno_v1.0.0.csv)
 
 | EntityID | input_file | input_csv | reduction_key |
 |-|-|-|-|
