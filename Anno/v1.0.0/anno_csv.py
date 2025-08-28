@@ -1,6 +1,6 @@
-### 2500808 anno_csv.py
+### 2500828 anno_csv.py
 ### 为h5ad的细胞添加新的注释，input_csv的第一列为h5ad原来的列和值，第二列为新建的列和值
-### 确保输入的h5ad的.obsm是X_umap
+### 确保输入的h5ad的.obsm是X_umap=umap
 
 import pandas as pd
 import scanpy as sc
@@ -11,28 +11,29 @@ parser = argparse.ArgumentParser(description="Process input file paths.")
 parser.add_argument(
     "--input_h5ad",
     type=str,
-    default="/data/input/Files/yangdong/wdl/SCP/Dataget/W202508040017201/01_dataget/H1314_dataget/H1314.h5ad",
+    default="/data/work/Single-Cell-Pipeline/output/dataget/H1314/H1314.h5ad",
     help="Path to the input h5ad file. (default: %(default)s)"
 )
 parser.add_argument(
     "--input_csv",
     type=str,
-    default="/data/input/Files/yangdong/wdl/SCP/Annotation/anno_H1314.csv",
+    default="/data/work/Single-Cell-Pipeline/Anno/input/anno_H1314.csv",
     help="Path to the input CSV file. (default: %(default)s)"
 )
-# parser.add_argument(
-#     "--umap_value",
-#     type=str,
-#     default="/data/work/anno.csv",
-#     help="Path to the input CSV file. (default: %(default)s)"
-# )
+parser.add_argument(
+    "--reduction_key",
+    type=str,
+    default="umap",
+    help="The reduction key of single cell data"
+)
 args = parser.parse_args()
 input_h5ad = args.input_h5ad
 input_csv = args.input_csv
-# umap_value = args.umap_value
+reduction_key = args.reduction_key
 
 # load anndata object
 adata = sc.read_h5ad(input_h5ad)
+print(adata)
 # read mapping csv
 mapping_df = pd.read_csv(input_csv)
 mapping_df = mapping_df.astype(str)
@@ -58,6 +59,6 @@ from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 with PdfPages(output_umap) as pdf:
     # sc.pl.umap默认的.obsm是X_umap
-    sc.pl.umap(adata, color=[mapping_df.columns[0],mapping_df.columns[1]], legend_loc="on data", ncols=2) #sc.pl.embedding(adata, basis='umap_test') 
+    sc.pl.scatter(adata, basis=reduction_key, color=[mapping_df.columns[0],mapping_df.columns[1]], legend_loc="on data") #sc.pl.embedding(adata, basis='umap_test') 
     plt.savefig(pdf, format='pdf', dpi=100, bbox_inches='tight')
     plt.close()

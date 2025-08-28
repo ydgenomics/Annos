@@ -1,0 +1,11 @@
+EntityID,input_file,input_csv,reduction_key
+test_peanut,/Files/yangdong/wdl/SCP/Dataget/W202508040017201/01_dataget/H1314_dataget/H1314.h5ad,/Files/yangdong/wdl/SCP/Annotation/anno_H1314.csv,umap
+test_peanut,/Files/yangdong/wdl/SCP/Dataget/W202508040017201/01_dataget/H2014_dataget/H2014.h5ad,/Files/yangdong/wdl/SCP/Annotation/anno_H2014.csv,umap
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
