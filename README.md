@@ -33,7 +33,8 @@ A tissue includes various cells with different cell types, precise annotation an
 - **特异基因富集：** 对FindAllMarkers的基因，进行富集分析，结合生物学知识，对细胞类型进行判断。
 ![enrich](./PNG/enrich.png)
 - **实验验证:** 可选取未注释出来的cluster的FindAllMarkers基因，进行原位杂交，查看其组织特异性，确认cluster的细胞类型。
-![in situ](./PNG/in_situ.png)
+
+![in_situ](./PNG/in_situ.png)
 
 ## 1.4 跨物种比较注释
 - **Workflow:** SAMap
@@ -60,7 +61,7 @@ A tissue includes various cells with different cell types, precise annotation an
     - 整合多方信息得到暂时最优注释结构
 
 **Example**
-  - [杨树单细胞注释参考_weichunxu@genomics.cn](https://github.com/ydgenomics/Annos/blob/main/DATA/%E6%9D%A8%E6%A0%91%E5%8D%95%E7%BB%86%E8%83%9E%E6%B3%A8%E9%87%8A%E5%8F%82%E8%80%83_weichunxu%40genomics.cn.docx)
+  - [杨树单细胞注释参考_weichunxu@genomics.cn](https://github.com/ydgenomics/Annos/blob/main/DATA/weichunxu%40genomics.cn.docx)
 
 ## Reference & Citation
  - [Annotating cell clusters in single cell RNA-seq datasets](https://pluto.bio/resources/Learning%20Series/annotating-clusters-in-scrnaseq)
