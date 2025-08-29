@@ -5,14 +5,13 @@
   - v1.0.0
     - 250828 简化marker基因可视化方案，dotplot和vlnplot
 
-
 ---
 # Input
 - **Variable**
 
 |变量名|类型|必需|参数说明|
 |-|-|-|-|
-|input_query_rds|File|是待注释的已做过标准化处理的Seurat对象(`.rds`),包含`scale.data``和HVGs`|
+|input_query_rds|File|是|待注释的已做过标准化处理的Seurat对象(`.rds`),包含`scale.data``和HVGs`|
 |marker_csv|File|是|对应细胞表达的marker基因(`.csv`)|
 |tissue|String|是|`"leaf"`|组织类型见`.csv`里面的第一列名`tissueType`|
 |cluster_key|String|是|待注释的Seurat对象分群列名见`colnames(seu@meta.data)`|
@@ -46,7 +45,7 @@ Active assay: RNA (29773 features, 3000 variable features)
 3 layers present: counts, data, scale.data
 2 dimensional reductions calculated: pca, umap
 ```
-- **Example** [download]()
+- **Example** [download](https://github.com/ydgenomics/Annos/blob/main/Anno-sctype/v1.0.0/Anno-sctype_v1.0.0.csv)
 
 | EntityID | input_query_rds | input_marker_csv | prefix | tissue | cluster_key | reduction_key | mem_sctype |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -56,12 +55,25 @@ Active assay: RNA (29773 features, 3000 variable features)
 # Output
 - **Frame**
 ```shell
+tree /data/users/yangdong/yangdong_db936836d4034b638f5c86db02932db1/online/Single-Cell-Pipeline/Anno-sctype/test
+/data/users/yangdong/yangdong_db936836d4034b638f5c86db02932db1/online/Single-Cell-Pipeline/Anno-sctype/test
+├── DotPlot_NipLSD10_anno_merged_data.rds.pdf
+├── NipLSD10_anno_merged_data_nodes.csv
+├── NipLSD10_anno_merged_data_sctype.pdf
+├── NipLSD10_anno_merged_data_sctype.rds
+├── NipLSD10_anno_merged_data_sctype_scores_sorted.csv
+├── report.txt
+└── VlnPlot_NipLSD10_anno_merged_data.rds.pdf
 
+1 directory, 7 files
 ```
 - **Interpretation**
-  - VlnPlot_*.pdf
-  - DotPlot_*pdf
-
+  - VlnPlot_*.pdf DotPlot_*pdf 查看选取的marker基因在待注释分组中的特异性
+  - _nodes.csv 绘制大小圈图的输入文件
+  - _scores_sorted.csv 待注释群和sctype注释结果的得分
+  - report.txt 打印有多少基因在scale.data矩阵中(为hvgs),是被考虑作为自动注释的marker基因
+  - _sctype.rds sctype注释后会新建一列sctype保存注释信息
+  - _sctype.pdf 可视化注释后结果，sctype的umap图和sctype给每个群注释细胞类型打分的大小圈图
 
 ---
 # Detail
@@ -79,10 +91,12 @@ sctype：*Fully-automated and ultra-fast cell-type identification using specific
 - **Script**
   - plot.R
   - anno_sctype.R
+- **Image**
+  - Seurat-R--10, Seurat-R--09
 
 # Reference & Citation
 > [单细胞全自动注释篇(四)——ScType](https://mp.weixin.qq.com/s/hKBiZCHwDdoJOk0YChbtMA)
 
 # Coder
 - [yangdong/yangdong@genomics.cn](https://github.com/ydgenomics)
-- [Anno-sctype]()
+- [Anno-sctype](https://github.com/ydgenomics/Annos/tree/main/Anno-sctype)

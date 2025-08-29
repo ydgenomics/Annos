@@ -1,6 +1,6 @@
 # Using [singleR](https://github.com/dviraran/SingleR) do annotation of cells/clusters
 - **Brief:** 用csv中对应关系注释单细胞数据新建一列细胞注释信息
-- **Fature** 
+- **Fature** 增加核酸序列比对的场景
 - **Log:** 
   - v1.0.0
     - 250828 提交Description
@@ -39,8 +39,10 @@ tree /data/input/Files/ResultData/Workflow/W202507220030347
 1 directories, 5 files
 ```
 - **Interpretation**
-
-
+  - report.txt 打印reference和query数据的基本信息，记录一致基因名的数量
+  - Os.hr_singler.pdf 注释后会添加singler键于meta.data，umap可视化注释后结果singler
+  - Os.hr_singler.rds 注释后输出rds文件
+  - Sv.hr_genes_changed_ref_singler.Rdata Sv构建的参考数据对象且做过序列比对保留与Os一致的基因名
 
 ---
 # Detail
@@ -52,6 +54,9 @@ singleR: 对每个细胞做注释，而非对cluster做注释！拿到参考数�
   - singleR
 - **Script**
   - anno_singler.R
+- **Image**
+  - Alignment--01; Alignment
+  - Seurat-R--10, Seurat-R--09
 
 ---
 # Reference & Citation
