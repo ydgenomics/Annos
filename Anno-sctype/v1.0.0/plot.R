@@ -1,4 +1,4 @@
-### Date: 250828
+### Date: 250829
 ### VlnPlot, DotPlot
 ### [使用ggplot2美化Dotplot结果](https://mp.weixin.qq.com/s/rXbm4SQO6tl5hjY_BTI3dQ)
 
@@ -87,7 +87,7 @@ ggsave(p2,
 )
 gene_df <- gene_df[!duplicated(gene_df$gene), ]
 # ----------- DotPlot --------------- 
-pdf(paste0("DotPlot_", prefix,".pdf"), width= 1 + 0.2*length(gene_df$gene), height= 1 + 0.3*length(unique(gene_df$cluster)))
+pdf(paste0("DotPlot_", prefix,".pdf"), width= 1 + 0.2*length(gene_df$gene), height= 2 + 0.3*length(unique(gene_df$cluster)))
 # 1. 绘制 DotPlot：按 cluster 分组展示基因
 #    - split(gene_df$gene, gene_df$cluster) 把基因按 cluster 分面
 #    - cols 指定颜色梯度：白色(低表达) → 火砖红(高表达)
