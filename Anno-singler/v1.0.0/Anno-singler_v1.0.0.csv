@@ -1,2 +1,2 @@
 EntityID,input_query_rds,input_query_fa,input_ref_rds,input_ref_fa,ref_cluster_key,umap_name,whether_protein,mem_alignment,mem_singler
-yd_test,,,,,,,,,
+yd_test,/Files/yangdong/wdl/multi_anno/Os.hr.rds,/Files/zhangzijian/cross/pep/Osativa_323_v7.0.protein1.fa,/Files/yangdong/wdl/multi_anno/Sv.hr.rds,/Files/zhangzijian/cross/pep/Sviridis_500_v2.1.protein1.fa,celltypes,Xumap_,yes,8,16

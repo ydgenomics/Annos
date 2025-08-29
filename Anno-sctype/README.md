@@ -48,6 +48,9 @@ Active assay: RNA (29773 features, 3000 variable features)
 ```
 - **Example** [download]()
 
+| EntityID | input_query_rds | input_marker_csv | prefix | tissue | cluster_key | reduction_key | mem_sctype |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| yd_test | NipLSD10_anno_merged_data_obj_after_choir.rds | rice_leaf_marker0614.csv | rice | leaf | CHOIR_clusters_0.05 | CHOIR_P0_reduction_UMAP | 8 |
 
 ---
 # Output
@@ -56,6 +59,8 @@ Active assay: RNA (29773 features, 3000 variable features)
 
 ```
 - **Interpretation**
+  - VlnPlot_*.pdf
+  - DotPlot_*pdf
 
 
 ---

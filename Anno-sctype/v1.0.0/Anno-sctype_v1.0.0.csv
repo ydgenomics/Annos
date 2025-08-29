@@ -1,0 +1,2 @@
+EntityID,input_query_rds,input_marker_csv,prefix,tissue,cluster_key,reduction_key,mem_sctype
+yd_test,/Files/yangdong/wdl/multi_anno/NipLSD10_anno_merged_data_obj_after_choir.rds,/Files/yangdong/wdl/multi_anno/rice_leaf_marker0614.csv,rice,leaf,CHOIR_clusters_0.05,CHOIR_P0_reduction_UMAP,8

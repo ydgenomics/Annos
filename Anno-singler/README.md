@@ -17,8 +17,11 @@
   - `whether_protein` 是否是做蛋白质序列比对，"yes" or "no"
   - `mem_alignment` 任务运行内存GB
   - `mem_singler` 任务运行内存GB
-- **Example** [download]()
+- **Example** [download](https://github.com/ydgenomics/Annos/blob/main/Anno-singler/v1.0.0/Anno-singler_v1.0.0.csv)
 
+| EntityID | input_query_rds | input_query_fa | input_ref_rds | input_ref_fa | ref_cluster_key | umap_name | whether_protein | mem_alignment | mem_singler |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| yd_test | Os.hr.rds | Osativa_323_v7.0.protein1.fa | Sv.hr.rds | Sviridis_500_v2.1.protein1.fa | celltypes | Xumap_ | yes | 8 | 16 |
 
 ---
 # Output
@@ -26,16 +29,14 @@
 ```sehll
 tree /data/input/Files/ResultData/Workflow/W202507220030347
 /data/input/Files/ResultData/Workflow/W202507220030347
-│── reciprocal_best.txt
 ├── anno_singler
+│   ├── report.txt
 │   ├── Os.hr_singler.pdf
 │   ├── Os.hr_singler.rds
-│   ├── Sv.hr_genes_changed.rds
-│   ├── Sv.hr_genes_changed_ref_singler.Rdata
-│   └── Sviridis_500_v2.1.protein1.fa.dmnd
+│   └── Sv.hr_genes_changed_ref_singler.Rdata
 └── input.json
 
-1 directories, 7 files
+1 directories, 5 files
 ```
 - **Interpretation**
 
@@ -61,4 +62,4 @@ singleR: 对每个细胞做注释，而非对cluster做注释！拿到参考数�
 - **Editor:** yangdong (yangdong@genomics.cn)
 - **GitHub:** [ydgenomics](https://github.com/ydgenomics)
 - **Prospect:** Focused on innovative, competitive, open-source projects and collaboration
-- **Repository:** [Annos/Anno-singler]()
+- **Repository:** [Annos/Anno-singler](https://github.com/ydgenomics/Annos/tree/main/Anno-singler)
