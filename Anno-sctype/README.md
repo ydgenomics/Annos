@@ -3,6 +3,7 @@
 - **Fature** 
 - **Log:** 
   - v1.0.0
+    - 250903 Assay通过`assay_key`传参，默认Assay为'RNA'，Assay下必须具有scale.data
     - 250828 简化marker基因可视化方案，dotplot和vlnplot
 
 ---

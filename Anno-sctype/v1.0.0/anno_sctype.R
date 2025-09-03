@@ -1,4 +1,4 @@
-# Date: 250717 anno_sctype.R
+# Date: 250903 anno_sctype.R
 # Description: Using sctype to annotate single-cell RNA-seq data based on marker gene csv.
 # Input: marker_csv file, query .rds file, cluster key in query .rds object, and UMAP reduction name
 # Output: "_sctype.rds" and "_sctype_umap.pdf" files
@@ -17,6 +17,8 @@ option_list <- list(
     make_option(
         c("--input_query_rds"), type = "character", default = "/data/work/script/sctype0614/output/day3/NipLSD3_anno_merged_data_obj_after_choir_sctype.rds", help = "Path to input Seurat RDS file"),
     make_option(
+        c("--assay_key"), type = "character", default = "RNA", help = "Assay key in Seurat object"), # e.g. `RNA` or `SCT` 
+    make_option(
         c("--cluster_key"), type = "character", default = "CHOIR_clusters_0.05", help = "Cluster key in Seurat object"), # e.g. `CHOIR_clusters_0.05`
     make_option(
         c("--umap_name"), type = "character", default = "CHOIR_P0_reduction_UMAP", help = "UMAP reduction name"), # `CHOIR_P0_reduction_UMAP`
@@ -28,6 +30,7 @@ opt <- parse_args(OptionParser(option_list = option_list))
 input_marker_csv <- opt$input_marker_csv
 tissue <- opt$tissue  # tissue type, e.g. leaf, root, etc.
 input_query_rds <- opt$input_query_rds
+assay_key <- opt$assay_key
 cluster_key <- opt$cluster_key
 umap_name <- opt$umap_name
 n_circle <- opt$n_circle # 'n_circle' added by ydgenomics to adjust the display number of small circle in per cluster
@@ -107,7 +110,7 @@ sctype_score <- function(scRNAseqData, scaled = !0, gs, gs2 = NULL, gene_names_t
 
 #' Run ScType for cell type annotation
 
-seu <- readRDS(input_query_rds); DefaultAssay(seu) <- "RNA" # set default assay to RNA
+seu <- readRDS(input_query_rds)
 if ("sctype" %in% colnames(seu@meta.data)) {
   seu$sctype0 <- seu$sctype
 }
@@ -115,8 +118,7 @@ gs_list <- gene_sets_prepare(input_marker_csv, tissue); str(gs_list)
 gene_vector <- unlist(c(gs_list$gs_positive, gs_list$gs_negative))[unlist(c(gs_list$gs_positive, gs_list$gs_negative)) != "NA"]
 gene_vector <- unique(as.character(gene_vector))
 
-#seu <- readRDS(input_query_rds); DefaultAssay(seu) <- "RNA" # set default assay to RNA
-DefaultAssay(seu) <- "RNA"; print(seu)
+DefaultAssay(seu) <- assay_key; print(seu)
 # message("Running NormalizeData, FindVariableFeatures, and ScaleData.")
 # seu <- NormalizeData(seu, normalization.method = "LogNormalize", scale.factor = 10000)
 # seu <- FindVariableFeatures(seu)
@@ -127,7 +129,7 @@ seurat_package_v5 <- isFALSE('counts' %in% names(attributes(seu[["RNA"]])));
 print(sprintf("Seurat object %s is used", ifelse(seurat_package_v5, "v5", "v4")))
 
 # extract scaled scRNA-seq matrix
-scRNAseqData_scaled <- if (seurat_package_v5) as.matrix(seu[["RNA"]]$scale.data) else as.matrix(seu[["RNA"]]@scale.data)
+scRNAseqData_scaled <- if (seurat_package_v5) as.matrix(seu[[assay_key]]$scale.data) else as.matrix(seu[[assay_key]]@scale.data)
 missing_genes <- setdiff(gene_vector, rownames(scRNAseqData_scaled))
 
 # 放在脚本第一行即可
