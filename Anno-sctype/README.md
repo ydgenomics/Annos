@@ -13,6 +13,7 @@
 |变量名|类型|必需|参数说明|
 |-|-|-|-|
 |input_query_rds|File|是|待注释的已做过标准化处理的Seurat对象(`.rds`),包含`scale.data``和HVGs`|
+|assay_key|String|否|指定Assay且该Assay必须具有scale.data，如若不指定则默认为RNA|
 |marker_csv|File|是|对应细胞表达的marker基因(`.csv`)|
 |tissue|String|是|`"leaf"`|组织类型见`.csv`里面的第一列名`tissueType`|
 |cluster_key|String|是|待注释的Seurat对象分群列名见`colnames(seu@meta.data)`|
