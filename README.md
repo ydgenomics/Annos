@@ -4,15 +4,32 @@ A tissue includes various cells with different cell types, precise annotation an
 ---
 # Protocol: Plant single-cell annotation
 - **Log**
+  - 0908 优化数据库介绍
   - 250829
 
 ## 1.1 利用高质量参考转录组，投影注释（singleR）
 - **Workflow** [Anno-singler](https://github.com/ydgenomics/Annos/tree/main/Anno-singler)
 ![Anno-singler](./PNG/Anno-singler.png)
 - **Database**
-  - 各物种单细胞数据 [scplantdb](https://biobigdata.nju.edu.cn/scplantdb/home)
+  - 17个植物的单细胞数据 [scplantdb](https://biobigdata.nju.edu.cn/scplantdb/home)
   - 拟南芥各组织转录组 [NCBI website](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE226097)
   - 其他物种根茎叶10kp云平台已下载数据 /Files/Chara/
+
+<details>
+<summary><strong>scplantdb 使用指南</strong></summary>
+
+scplantdb 是一个资源丰富的植物单细胞数据库，包含：Marker基因数据；已发表数据的复现版本并提供便捷的数据下载等。查看详细文章，请 [click](https://drive.google.com/file/d/17ftoSQFZv8ZPxMHvHveFZlRyoT33VgNk/view?usp=drive_link)。文章解读[click1](https://mp.weixin.qq.com/s/i6x60pc3kJyJj1TIZc8tZg)，数据库使用[clik](https://mp.weixin.qq.com/s/FsU2RjM9qXk0eRghnNJ0Dg)
+- **Browser**
+  1. 下载h5ad/rds
+- **Marker**
+  1. 下载物种特异marker列表
+  2. 下载参考基因组数据
+- **Tools**
+  1. Blast：一个快速方便的基因比对
+  2. Cell type comporator: 快速比较两个细胞群并给出差异基因
+  3. Cell type Predictor: 基于输入的基因预测细胞类型
+
+</details>
 
 ## 1.2 利用已有marker基因集注释（scType，AUCell）
 - **Workflow:** [Anno-sctype](https://github.com/ydgenomics/Annos/tree/main/Anno-sctype)
