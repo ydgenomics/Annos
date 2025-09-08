@@ -3,6 +3,7 @@
 - **Fature** 增加核酸序列比对的场景
 - **Log:** 
   - v1.0.0
+    - 0908 更新singler的输出，增加了score plot和pred.csv输出，对于预期要注释cluster进行注释细胞占比的可视化
     - 250828 提交Description
 
 ---
@@ -10,6 +11,7 @@
 - **Variable**
   - `input_query_rds` 待注释的.rds文件包含RNA@data即标准化处理后的矩阵
   - `input_query_fa` 非必须文件，待注释数据对应蛋白质文件，如果要做基因名一致性处理需要做蛋白质序列比对
+  - `query_cluster_key` 待注释数据储存待注释分群的键名见`colnames(seu@meta.data)`
   - `input_ref_rds` 参考rds文件包含RNA@counts和已经注释细胞类型的键`ref_cluster_key`
   - `input_ref_fa` 非必须文件，参考数据矩阵基因对应蛋白质文件，如果要做基因名一致性处理需要做蛋白质序列比对 
   - `ref_cluster_key` 参考数据储存细胞类型的键名见`colnames(seu@meta.data)`
@@ -40,9 +42,12 @@ tree /data/input/Files/ResultData/Workflow/W202507220030347
 ```
 - **Interpretation**
   - report.txt 打印reference和query数据的基本信息，记录一致基因名的数量
-  - Os.hr_singler.pdf 注释后会添加singler键于meta.data，umap可视化注释后结果singler
-  - Os.hr_singler.rds 注释后输出rds文件
-  - Sv.hr_genes_changed_ref_singler.Rdata Sv构建的参考数据对象且做过序列比对保留与Os一致的基因名
+  - _singler.pdf 注释后会添加singler键于meta.data，umap可视化注释后结果singler
+  - _singler.rds 注释后输出rds文件
+  - _ref_singler.Rdata 构建的参考数据对象且做过序列比对保留与query一致的基因名
+  - _component.pdf 待注释的分群中各个群注释后细胞组成占比热图
+  - _pred.pdf 每个细胞注释score热图，其中列为query，行为reference
+  - _pred.csv 每个细胞注释对应细胞类型的得分csv
 
 ---
 # Detail
@@ -57,10 +62,16 @@ singleR: 对每个细胞做注释，而非对cluster做注释！拿到参考数�
 - **Image**
   - Alignment--01; Alignment
   - Seurat-R--10, Seurat-R--09
+- **Learn** singler基于两个数据共有基因计算相似性，独立来看就是一个细胞与reference的所有细胞类型比，拿到一个细胞与细胞类型的score，score越高则越相近。但是如果score都很低，取最高的score显然不太对，所以作者考虑了`prune`，基于delta的prune，如果候选的score与其它类型的score的中位数差值越小，说明其特异性并不是很好。在默认参数里面，作者只会将delea为0的指定为NA，似乎有点过于smooth，可能可以提供一个可选参数delta_cutoff做进一步的筛选。
+- **Q&A**
+  1. **R中tibble和data.frame对象的差别？**
 
 ---
 # Reference & Citation
-> [使用singleR基于自建数据库来自动化注释单细胞转录组亚群](https://mp.weixin.qq.com/s/GpOxe4WLIrBOjbdH5gfyOQ)
+- [单细胞全自动注释篇(三)——SingleR](https://mp.weixin.qq.com/s/ZpC4y6sXiATXS5BjoaQbGw)
+- [使用singleR基于自建数据库来自动化注释单细胞转录组亚群](https://mp.weixin.qq.com/s/GpOxe4WLIrBOjbdH5gfyOQ)
+- [单细胞细胞注释详解之singleR细胞注释](https://mp.weixin.qq.com/s/X_jEpuoY8hSEdW9oOiKlYQ)
+- [【数据可视化神器】pheatmap：让热图更简单更美观](https://mp.weixin.qq.com/s/tHqmt4fJaFPcxzIYILDwzw)
 
 ---
 # Coder

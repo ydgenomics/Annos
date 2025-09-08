@@ -1,8 +1,7 @@
-# Date: 20250722 # Title: run_singler.R # Coder: ydgenomics
+# Date: 20250908 # Title: run_singler.R # Coder: ydgenomics
 # Description: Using SingleR to annotate single-cell RNA-seq data based on a custom reference dataset.
 # Input: reference .rds has RNA, query .rds files, and a metadata key for clustering in the reference dataset
-# Output: `_refsingleR.Rdata` and `_singleR.rds files`
-# Image: Seurat-R--04 /software/miniconda/envs/Seurat/bin/R
+# Image: Seurat-R-- /software/miniconda/envs/Seurat/bin/R
 # Reference: [使用singleR基于自建数据库来自动化注释单细胞转录组亚群](https://mp.weixin.qq.com/s/GpOxe4WLIrBOjbdH5gfyOQ)
 
 library(Seurat)
@@ -13,18 +12,21 @@ library(optparse)
 
 option_list <- list(
     make_option(
-        c("-r", "--input_ref_rds"), type = "character", default = "/data/work/Sv_cggene.rds", help = "Path to the reference dataset"),
-    make_option(
-        c("-q", "--input_query_rds"), type = "character", default = "/data/work/SingleR/convert/Os.hr.rds", help = "Path to the query dataset"),
+        c("-r", "--input_ref_rds"), type = "character", default = "/data/work/Single-Cell-Pipeline/Alignment/test/Os.hr_genes_changed.rds", help = "Path to the reference dataset"),
     make_option(
         c("-k", "--ref_cluster_key"), type = "character", default = "celltypes",help = "Metadata key for clustering in the reference dataset"),
     make_option(
-        c("--umap_name"), type = "character", default = "Xumap_", help = "UMAP reduction name") # `CHOIR_P0_reduction_UMAP`
+        c("-q", "--input_query_rds"), type = "character", default = "/data/input/Files/yangdong/wdl/Anno-singler/Sv.hr.rds", help = "Path to the query dataset"),
+    make_option(
+        c("-d", "--query_cluster_key"), type = "character", default = "seurat_clusters",help = "Metadata key for clustering in the query dataset"),
+    make_option(
+        c("-u", "--umap_name"), type = "character", default = "Xumap_", help = "UMAP reduction name") # `CHOIR_P0_reduction_UMAP`
 )
 opt <- parse_args(OptionParser(option_list = option_list))
 input_ref_rds <- opt$input_ref_rds
-input_query_rds <- opt$input_query_rds
 ref_cluster_key <- opt$ref_cluster_key
+input_query_rds <- opt$input_query_rds
+query_cluster_key <- opt$query_cluster_key
 umap_name <- opt$umap_name
 
 # Precheck genes 
@@ -42,12 +44,12 @@ write_report({
   ref_seu <- readRDS(input_ref_rds)
   cat("Reference dataset loaded successfully.\n")
   print(ref_seu)
-  cat("\nFirst 10 genes in the reference dataset:\n")
+  cat("First 10 genes in the reference dataset:\n")
   print(head(rownames(ref_seu), n=10))
   query_seu <- readRDS(input_query_rds)
-  cat("Query dataset loaded successfully.\n")
+  cat("\nQuery dataset loaded successfully.\n")
   print(query_seu)
-  cat("\nFirst 10 genes in the Query dataset:\n")
+  cat("First 10 genes in the Query dataset:\n")
   print(head(rownames(query_seu), n=10))
   common_genes <- intersect(rownames(ref_seu), rownames(query_seu))
   num_common_genes <- length(common_genes)
@@ -75,7 +77,7 @@ create_ref_singler <- function(input_ref_rds, ref_cluster_key) {
 
 
 # Step 2: Load the query dataset and run singleR for annotation
-run_singler <- function(query_seu, ref_sce) {
+run_singler <- function(query_seu, ref_sce, prefix) {
     # query_seu <- readRDS(input_query_rds); DefaultAssay(query_seu) <- "RNA"
     DefaultAssay(query_seu) <- "RNA"
     # query_seu <- NormalizeData(query_seu, normalization.method = "LogNormalize", scale.factor = 10000)
@@ -91,21 +93,65 @@ run_singler <- function(query_seu, ref_sce) {
     pred <- SingleR(
         test = query_data, ref = ref_sce, labels = ref_sce$Type
     )
+    # plot and save pred
+    n_label <- length(unique(pred$labels))
+    pdf(paste0(prefix, "_pred.pdf"), width = n_label, height = n_label/2)
+    plotScoreHeatmap(pred)
+    p <- plotDeltaDistribution(pred, ncol = 8, dots.on.top = FALSE); print(p)
+    p <- plotScoreDistribution(pred, ncol = 8, dots.on.top = FALSE); print(p)
+    dev.off()
+    write.csv(pred, paste0(prefix, "_pred.csv"))
+    # save to query_seu
     if ("singler" %in% colnames(query_seu@meta.data)) {
         query_seu$singler0 <- query_seu$singler
     }
     query_seu$singler <- pred$labels
-    #output_query_rds <- paste0(sub("\\.rds$", "", basename(input_query_rds)), "_singler.rds")
-    #saveRDS(query_seu, file = output_query_rds)
     return(query_seu)
 }
 
 ref_sce <- create_ref_singler(input_ref_rds, ref_cluster_key)
-seu <- run_singler(query_seu, ref_sce)
+prefix <- sub("\\.rds$", "", basename(input_query_rds))
+seu <- run_singler(query_seu, ref_sce, prefix)
 p <- DimPlot(seu, reduction = umap_name, group.by = 'singler', label = TRUE, repel = TRUE)
-pdf(paste0(sub("\\.rds$", "", basename(input_query_rds)), "_singler.pdf"), width = 10, height = 8)
+pdf(paste0(prefix, "_singler.pdf"), width = 10, height = 8)
 print(p)
 dev.off()
+              
+# The heatmap of component
+df <- seu@meta.data[c(query_cluster_key, "singler")]
+colnames(df) <- c("seurat_clusters", "singler")
+              
+library(dplyr)
+library(tidyr)
+library(tibble)
+
+percentage_df <- df %>%
+  dplyr::count(seurat_clusters, singler) %>%
+  group_by(seurat_clusters) %>%
+  mutate(pct = as.numeric(n / sum(n) * 100)) %>%  # 确保pct是数值型
+  select(-n) %>%
+  pivot_wider(
+    names_from = singler,
+    values_from = pct,
+    values_fill = 0
+  ) %>%
+  column_to_rownames("seurat_clusters")
+
+heatmap_matrix <- as.matrix(percentage_df)
+
+library(pheatmap)
+pdf(paste0(prefix, "_component.pdf"), width = length(unique(seu$singler))/2, height = length(unique(seu$singler))/2)
+pheatmap(heatmap_matrix,
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         display_numbers = TRUE,
+         number_format = "%.1f",
+         number_color = "black",
+         color = colorRampPalette(c("white", "yellow", "red"))(100),
+         main = "Cluster Component Heatmap")
+
+dev.off()
+              
 # Save the annotated query dataset
-output_query_rds <- paste0(sub("\\.rds$", "", basename(input_query_rds)), "_singler.rds")
+output_query_rds <- paste0(prefix, "_singler.rds")
 saveRDS(seu, file = output_query_rds)
