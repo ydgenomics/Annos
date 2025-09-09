@@ -6,6 +6,8 @@ A tissue includes various cells with different cell types, precise annotation an
 - **Log**
   - 0908 优化数据库介绍
   - 250829
+- **Fature**
+  - 增加基于AUcell的自动化细胞类型注释流程
 
 ## 1.1 利用高质量参考转录组，投影注释（singleR）
 - **Workflow** [Anno-singler](https://github.com/ydgenomics/Annos/tree/main/Anno-singler)
@@ -89,3 +91,4 @@ scplantdb 是一个资源丰富的植物单细胞数据库，包含：Marker基�
  - [scPlantDB](https://biobigdata.nju.edu.cn/scplantdb/home) [*基迪奥生物*·分享一个好用的植物单细胞数据库](https://mp.weixin.qq.com/s/1dTCDc5U3dvCy15GfLRY4A)
  - [PlantCellMarker](https://www.tobaccodb.org/pcmdb/homePage) [*生信益站*·单细胞专题25| 植物细胞类型注释数据库: PlantCellMarker](https://mp.weixin.qq.com/s/Y1AyXa8jkQBV4yWo_HihTw)
  - [PsctH](http://jinlab.hzau.edu.cn/PsctH/) [*植物科学最前言*·PBJ | 华中农大开发出植物单细胞转录组综合数据库，提供综合全面的单细胞Marker基因资源和单细胞研究的workflow](https://mp.weixin.qq.com/s/5dMORWQeX4eTFgH0e1YkTg)
+ - [一文搞定单细胞基因集评分](https://mp.weixin.qq.com/s/tntX8DlA4qEuGb4v5SQErA)

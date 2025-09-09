@@ -21,9 +21,9 @@
   - `mem_singler` 任务运行内存GB
 - **Example** [download](https://github.com/ydgenomics/Annos/blob/main/Anno-singler/v1.0.0/Anno-singler_v1.0.0.csv)
 
-| EntityID | input_query_rds | input_query_fa | input_ref_rds | input_ref_fa | ref_cluster_key | umap_name | whether_protein | mem_alignment | mem_singler |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| yd_test | Os.hr.rds | Osativa_323_v7.0.protein1.fa | Sv.hr.rds | Sviridis_500_v2.1.protein1.fa | celltypes | Xumap_ | yes | 8 | 16 |
+| EntityID | input_query_rds | input_query_fa | query_cluster_key | input_ref_rds | input_ref_fa | ref_cluster_key | umap_name | whether_protein | mem_alignment | mem_singler |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| yd_test | Os.hr.rds | Osativa_323_v7.0.protein1.fa | seurat_clusters | Sv.hr.rds | Sviridis_500_v2.1.protein1.fa | celltypes | Xumap_ | yes | 8 | 16 |
 
 ---
 # Output
