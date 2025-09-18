@@ -9,7 +9,78 @@ A tissue includes various cells with different cell types, precise annotation an
 - **Fature**
   - 增加基于AUcell的自动化细胞类型注释流程
 
-## 1.1 利用高质量参考转录组，投影注释（singleR）
+## Plant Database
+ [Article](https://www.cell.com/molecular-plant/fulltext/S1674-2052(21)00163-5)
+
+ [Article](https://academic.oup.com/nar/article/50/D1/D1448/6413587)
+Celltypes	Species	Tissue	Marker genes	Single cell genes	High confidence genes	Unique genes	Source
+
+在下载界面可以选择对应的物种下载marker基因
+Species	Tissues	Celltypes	Genes
+可直接下载的单细胞数据(.h5ad)
+|Species|[PlantscRNAdb](http://ibi.zju.edu.cn/plantscrnadb/)|[scPlantDB](https://biobigdata.nju.edu.cn/scplantdb/home)|[PlantCellMarker](https://www.tobaccodb.org/pcmdb/homePage)|
+|-|-|-|-|
+|[Arabidopsis thaliana](https://en.wikipedia.org/wiki/Arabidopsis_thaliana); [拟南芥](https://baike.baidu.com/item/%E6%8B%9F%E5%8D%97%E8%8A%A5/881872)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(47)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(34);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|[Bombax ceiba](https://en.wikipedia.org/wiki/Bombax_ceiba); [木棉](https://baike.baidu.com/item/%E6%9C%A8%E6%A3%89/1326)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Brassica rapa](https://en.wikipedia.org/wiki/Brassica_rapa); [蔓菁cabbage](https://baike.baidu.com/item/%E8%94%93%E8%8F%81/6700041)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Catharanthus roseus](https://en.wikipedia.org/wiki/Catharanthus_roseus); [长春花](https://baike.baidu.com/item/%E9%95%BF%E6%98%A5%E8%8A%B1/202596)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(2)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Cynodon dactylon](https://en.wikipedia.org/wiki/Cynodon_dactylon); [狗牙根](https://baike.baidu.com/item/%E7%8B%97%E7%89%99%E6%A0%B9/813633)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Fragaria vesca](https://en.wikipedia.org/wiki/Fragaria_vesca); [野草莓](https://baike.baidu.com/item/%E9%87%8E%E8%8D%89%E8%8E%93/3214995)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Glycine max](https://en.wikipedia.org/wiki/Soybean); [大豆Soybean](https://baike.baidu.com/item/%E5%A4%A7%E8%B1%86/567793)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(4)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|[Gossypium arboreum](https://en.wikipedia.org/wiki/Gossypium_arboreum); [树棉](https://baike.baidu.com/item/%E6%A0%91%E6%A3%89/1706952)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Gossypium bickii](https://species.wikimedia.org/wiki/Gossypium_bickii); [比克氏棉](https://baike.baidu.com/item/%E6%AF%94%E5%85%8B%E6%B0%8F%E6%A3%89/64397397)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Gossypium hirsutum](https://en.wikipedia.org/wiki/Gossypium_hirsutum); [陆地棉](https://baike.baidu.com/item/%E9%99%86%E5%9C%B0%E6%A3%89/3274817)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(4)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(2);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Hevea brasiliensis](https://en.wikipedia.org/wiki/Hevea_brasiliensis); [橡胶树](https://baike.baidu.com/item/%E6%A9%A1%E8%83%B6%E6%A0%91/742959)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Hylocereus undatus](https://commons.wikimedia.org/wiki/Hylocereus_undatus); [火龙果](https://baike.baidu.com/item/%E7%81%AB%E9%BE%99%E6%9E%9C/240065)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Lemna minuta](https://en.wikipedia.org/wiki/Lemna_minuta); [浮萍](https://baike.baidu.com/item/%E6%B5%AE%E8%90%8D/77667)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Limonium bicolor](http://www.efloras.org/florataxon.aspx?flora_id=2&taxon_id=200017502); [二色补血草](https://baike.baidu.com/item/%E4%BA%8C%E8%89%B2%E8%A1%A5%E8%A1%80%E8%8D%89/9009259)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Manihot esculenta Crantz](https://en.wikipedia.org/wiki/Cassava); [木薯](https://baike.baidu.com/item/%E6%9C%A8%E8%96%AF/1143454)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(2)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Medicago sativa](https://en.wikipedia.org/wiki/Alfalfa); [苜蓿](https://baike.baidu.com/item/%E8%8B%9C%E8%93%BF/103899)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Medicago truncatula](https://en.wikipedia.org/wiki/Medicago_truncatula); [蒺藜状苜蓿](https://baike.baidu.com/item/%E8%92%BA%E8%97%9C%E7%8A%B6%E8%8B%9C%E8%93%BF/8294294)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(4)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Nepeta tenuifolia](http://www.efloras.org/florataxon.aspx?flora_id=2&taxon_id=210001326); [假苏/荆芥](https://baike.baidu.com/item/%E5%81%87%E8%8B%8F/2999440)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Nicotiana attenuata](https://en.wikipedia.org/wiki/Nicotiana_attenuata); [渐狭叶烟草](https://www.iplant.cn/info/Nicotiana%20attenuata?t=n)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Nicotiana tabacum](https://en.wikipedia.org/wiki/Nicotiana_tabacum); [烟草](https://baike.baidu.com/item/%E7%83%9F%E8%8D%89/748743)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(2)|NULL|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|[Oryza sativa](https://en.wikipedia.org/wiki/Oryza_sativa); [稻](https://baike.baidu.com/item/%E7%A8%BB/4417005)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(6)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(6);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|[Phyllostachys edulis](https://en.wikipedia.org/wiki/Phyllostachys_edulis); [毛竹](https://baike.baidu.com/item/%E6%AF%9B%E7%AB%B9/3744)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Pisum sativum](https://en.wiktionary.org/wiki/Pisum_sativum); [豌豆](https://baike.baidu.com/item/%E8%B1%8C%E8%B1%86/822636)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Populus alba](https://en.wikipedia.org/wiki/Populus_alba); [银白杨](https://baike.baidu.com/item/%E9%93%B6%E7%99%BD%E6%9D%A8/3113964)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Populus alba & Populus glandulosa](https://www.cabidigitallibrary.org/doi/full/10.1079/cabicompendium.43372); [杨树84K](https://baike.baidu.com/item/84K%E6%9D%A8/2061252)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Populus alba & Populus tremula](https://phytozome-next.jgi.doe.gov/info/PtremulaxPopulusalbaHAP2_v5_1); [杨树717](https://www.zhihu.com/question/323672958)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Populus alba var. pyramidalis](https://www.cabidigitallibrary.org/doi/full/10.1079/cabicompendium.43417); [新疆杨](https://baike.baidu.com/item/%E6%96%B0%E7%96%86%E6%9D%A8/3114005)|NULL|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Populus euramericana](https://www.gbif.org/species/3040207); [欧美杨107号](https://baike.baidu.com/item/%E6%AC%A7%E7%BE%8E%E6%9D%A8107%E5%8F%B7/6419248)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Populus trichocarpa](https://en.wikipedia.org/wiki/Populus_trichocarpa); [毛果杨](https://baike.baidu.com/item/%E6%AF%9B%E6%9E%9C%E6%9D%A8/6917278)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(2)|NULL|NULL|
+|[Solanum lycopersicum](https://en.wikipedia.org/wiki/Tomato); [番茄](https://baike.baidu.com/item/%E7%95%AA%E8%8C%84/69104)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(2)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(2);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|[Sorghum bicolor](https://en.wikipedia.org/wiki/Sorghum); [高粱](https://baike.baidu.com/item/%E9%AB%98%E7%B2%B1/2862)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Triticum aestivum](https://en.wikipedia.org/wiki/Common_wheat); [小麦](https://baike.baidu.com/item/%E5%B0%8F%E9%BA%A6/10237)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(1);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|NULL|
+|[Wolffia australiana](https://en.wikipedia.org/wiki/Wolffia_australiana); [Wolffia australiana](https://baike.baidu.com/item/Wolffia%20australiana/64132633#:~:text=Wolffia%20australiana%E6%98%AF%E6%A4%8D%E7%89%A9%E7%95%8C%E8%A2%AB%E5%AD%90%E6%A4%8D%E7%89%A9%E9%97%A8%E6%9C%A8%E5%85%B0%E7%BA%B2%E7%99%BE%E5%90%88%E4%BA%9A%E7%BA%B2%E6%B3%BD%E6%B3%BB%E8%B6%85%E7%9B%AE%E6%B3%BD%E6%B3%BB%E7%9B%AE%E5%A4%A9%E5%8D%97%E6%98%9F%E7%A7%91%E6%97%A0%E6%A0%B9%E8%90%8D%E5%B1%9E%E6%A4%8D%E7%89%A9%EF%BC%8C%E5%B1%9E%E4%BA%8E%E4%B8%96%E7%95%8C%E4%B8%8A%E6%9C%80%E5%B0%8F%E7%9A%84%E8%A2%AB%E5%AD%90%E6%A4%8D%E7%89%A9%EF%BC%8C%E5%85%B6%E6%A4%AD%E7%90%83%E5%BD%A2%E5%B0%8F%E6%A4%8D%E6%A0%AA%E6%A8%AA%E5%BE%84%E7%BA%A61%E6%AF%AB%E7%B1%B3%EF%BC%8C%E4%BB%85%E7%94%B1%E4%B8%80%E7%89%87%E5%8F%B6%E7%89%87%E3%80%81%E4%B8%80%E4%B8%AA%E9%9B%84%E8%95%8A%E5%92%8C%E4%B8%80%E4%B8%AA%E9%9B%8C%E8%95%8A%E6%9E%84%E6%88%90%EF%BC%8C%E6%97%A0%E6%A0%B9%E4%B8%94%E7%BC%BA%E4%B9%8F%E7%BB%B4%E7%AE%A1%E6%9D%9F,%5B2-3%5D%E3%80%82%20%E8%AF%A5%E7%89%A9%E7%A7%8D%E7%94%9F%E9%95%BF%E7%82%B9%E4%BB%85%E5%90%AB%E4%B8%80%E8%87%B3%E6%95%B0%E4%B8%AA%E7%BB%86%E8%83%9E%EF%BC%8C%E5%8F%AF%E5%88%86%E5%8C%96%E5%87%BA%E5%8F%B6%E5%8E%9F%E5%9F%BA%E3%80%81%E5%88%86%E6%9E%9D%E5%8F%8A%E8%8A%B1%E5%99%A8%E5%AE%98%EF%BC%8C%E8%8A%B1%E7%BB%93%E6%9E%84%E7%AE%80%E5%8C%96%E8%87%B3%E6%97%A0%E8%8A%B1%E7%93%A3%E5%92%8C%E8%90%BC%E7%89%87%20%5B3%5D%E3%80%82)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(1)|NULL|NULL|
+|[Zea mays](https://en.wikipedia.org/wiki/Maize); [玉米](https://baike.baidu.com/item/%E7%8E%89%E8%9C%80%E9%BB%8D/60156796)|[GENE & SC](http://ibi.zju.edu.cn/plantscrnadb/#/download)(10)|[SC](https://biobigdata.nju.edu.cn/scplantdb/dataset)(11);[GENE](https://biobigdata.nju.edu.cn/scplantdb/marker)|[GENE](https://www.tobaccodb.org/pcmdb/download)|
+|**Total species**|34|17|6|
+
+## 1. 利用已有marker基因集注释（scType，AUCell）
+- **Workflow:** [Anno-sctype](https://github.com/ydgenomics/Annos/tree/main/Anno-sctype)
+![Anno-sctype](./PNG/Anno-sctype.png)
+- **Database**
+  - [scplantdb](https://biobigdata.nju.edu.cn/scplantdb/marker)
+  - [plantscrnadb](http://ibi.zju.edu.cn/plantscrnadb/#/)
+  - [PlantCellMarker](https://www.tobaccodb.org/pcmdb/homePage)
+
+<details>
+<summary><strong> 秒懂marker基因 </strong> </summary>
+
+- **Marker基因:** **Marker基因是指在特定细胞类型或状态中特异性表达的基因**，它们可以作为识别和区分不同细胞亚群的分子标记。
+- **Marker基因的选择:** 在一个特定的细胞类型中特异性高表达，而在其他细胞类型中表达较低或不表达，最好寻找经过原位杂交验证的marker基因。
+  - **特异性**：在目标细胞类型中高度表达，而在其他细胞类型中表达水平低或不表达。
+  - **稳定性**：在不同条件下表达水平相对稳定。
+  - **生物学意义**：与细胞的功能或状态密切相关。
+- **Marker基因鉴定方式:**
+  - `FindMarkers()`函数——可以对感兴趣的**两个**细胞群/细胞亚群，去寻找它与其它所有的亚群，表达有差异的基因；或者给定两个亚群，单独比较这两个亚群之间的差异基因。
+  - `FindAllMarkers()`可以计算出**所有细胞簇**的marker基因，可以调整min.pct和logfc.threshold的参数值
+
+**Note:** 详细信息请看 [细胞类群marker基因识别及可视化](https://mp.weixin.qq.com/s/XA0gP-uYJmgcSQ1VAAYxYA)
+
+</details>
+
+## 2. 利用高质量参考转录组，投影注释（singleR）
 - **Workflow** [Anno-singler](https://github.com/ydgenomics/Annos/tree/main/Anno-singler)
 ![Anno-singler](./PNG/Anno-singler.png)
 - **Database**
@@ -33,42 +104,19 @@ scplantdb 是一个资源丰富的植物单细胞数据库，包含：Marker基�
 
 </details>
 
-## 1.2 利用已有marker基因集注释（scType，AUCell）
-- **Workflow:** [Anno-sctype](https://github.com/ydgenomics/Annos/tree/main/Anno-sctype)
-![Anno-sctype](./PNG/Anno-sctype.png)
-- **Database**
-  - [markers of scplantdb](https://biobigdata.nju.edu.cn/scplantdb/marker)
-  - [markers of plantscrnadb](http://ibi.zju.edu.cn/plantscrnadb/#/)
-  - [markers of PlantCellMarker](https://www.tobaccodb.org/pcmdb/homePage)
 
-<details>
-<summary><strong> 秒懂marker基因 </strong> </summary>
 
-- **Marker基因:** **Marker基因是指在特定细胞类型或状态中特异性表达的基因**，它们可以作为识别和区分不同细胞亚群的分子标记。
-- **Marker基因的选择:** 在一个特定的细胞类型中特异性高表达，而在其他细胞类型中表达较低或不表达，最好寻找经过原位杂交验证的marker基因。
-  - **特异性**：在目标细胞类型中高度表达，而在其他细胞类型中表达水平低或不表达。
-  - **稳定性**：在不同条件下表达水平相对稳定。
-  - **生物学意义**：与细胞的功能或状态密切相关。
-- **Marker基因鉴定方式:**
-  - `FindMarkers()`函数——可以对感兴趣的**两个**细胞群/细胞亚群，去寻找它与其它所有的亚群，表达有差异的基因；或者给定两个亚群，单独比较这两个亚群之间的差异基因。
-  - `FindAllMarkers()`可以计算出**所有细胞簇**的marker基因，可以调整min.pct和logfc.threshold的参数值
-
-**Note:** 详细信息请看 [细胞类群marker基因识别及可视化](https://mp.weixin.qq.com/s/XA0gP-uYJmgcSQ1VAAYxYA)
-
-</details>
-
-## 1.3 利用在线网站注释
-- **XSpeciesSpanner:** 需要准备好cluster特异基因列表(直接用FindAllMarkers的结果)和基因对应的蛋白质序列(.fa) [Website](https://shoot.plantcellatlas.com/#/annotate) [Article](https://www.cell.com/cell/fulltext/S0092-8674(25)00858-X)
 ![XSpeciesSpanne](./PNG/XSpeciesSpanne.png)
 - **scPlantDB:** 使用其[Cell type Predictor](https://biobigdata.nju.edu.cn/scplantdb/tools/predct)做细胞类型预测
 ![predictor](./PNG/predictor.png)
 
-## 1.4 跨物种比较注释
+## 3 跨物种比较注释
 - **Workflow:** SAMap
 ![SAMap](./PNG/SAMap.png)
 - **Brief:** 寻找高质量的近缘物种的单细胞转录数据，通过SAMap进行细胞相似性比较，并查找FindAllMarkers的top基因是否为已研究基因及富集结果，确定注释。
+- **XSpeciesSpanner:** 需要准备好cluster特异基因列表(直接用FindAllMarkers的结果)和基因对应的蛋白质序列(.fa) [Website](https://shoot.plantcellatlas.com/#/annotate) [Article](https://www.cell.com/cell/fulltext/S0092-8674(25)00858-X)
 
-## 1.5 利用marker基因手动注释（查文献）
+## 4. 利用marker基因手动注释（查文献）
 - **Workflow:** [Anno](https://github.com/ydgenomics/Annos/tree/main/Anno)
 - **Brief:** 特异基因关联细胞类型的手动注释，综合各种证据
 ![dotplot_umap](./PNG/dotplot_umap.png)
