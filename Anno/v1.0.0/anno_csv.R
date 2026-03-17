@@ -1,4 +1,4 @@
-### Date: 250828 anno_csv.R
+### Date: 260317 anno_csv.R
 
 # Load necessary libraries
 suppressPackageStartupMessages({
@@ -12,11 +12,11 @@ suppressPackageStartupMessages({
 option_list <- list(
     make_option("--input_rds",
                             type="character",
-                            default="/data/work/Single-Cell-Pipeline/output/dataget/peanut_merge/H1314.hr.rds",
+                            default="/data/work/yita/Dataget-3/yita_yes/yita_yes.rds",
                             help="Path to the input rds file. [default: %default]"),
     make_option("--input_csv",
                             type="character",
-                            default="/data/work/Single-Cell-Pipeline/Anno/input/anno_H1314.csv",
+                            default="/data/work/yita/scAnno/yita_yes.csv",
                             help="Path to the input CSV file. [default: %default]"),
     make_option("--reduction_key",
                             type="character",
@@ -54,7 +54,12 @@ names(map_dict) <- mapping_df[[1]]
 
 # Apply mapping to create a new metadata column.
 # (Ensure the new values are character strings.)
-seurat_obj@meta.data[[new_col]] <- as.character(map_dict[seurat_obj@meta.data[[old_col]]])
+seurat_obj@meta.data[[new_col]] <- as.character(map_dict[as.character(seurat_obj@meta.data[[old_col]])])
+    
+
+# 检查是否有 NA
+na_count <- sum(is.na(seurat_obj@meta.data[[new_col]]))
+print(paste("NA数量:", na_count))
 
 # Prepare output filenames
 file_name <- basename(input_rds)
