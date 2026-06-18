@@ -94,6 +94,7 @@
 ### 数据库
 - 2025|Molecular Plant | PlantscRNAdb 4.0上线：首次建立植物细胞“通用语言”，破解跨物种识别难题 [wechat](https://mp.weixin.qq.com/s/rC7RDZZpFDyaDa8BED7YNw) [PCmaster_anno](https://github.com/bioinplant/PCmaster) [HCMarker](https://github.com/daidai905/HCMarker)
 - 2025|Plant & Cell Physiology 【植物marker基因数据库】整合了来自38项研究、9个物种、17种组织和199种细胞类PscOA发布 https://mp.weixin.qq.com/s/7Haxzp4teJfNWXFeZRu3XA http://sdaubiodb.com.cn/pscoa/
+- [cell维管植物茎图谱](https://shoot.plantcellatlas.com/#/resources)
 
 ### 基因
 - 2026 植物基因表达综合数据库--涵盖147种植物的最大规模注释基因表达资源库 https://mp.weixin.qq.com/s/4OAPqKsRMchryhlHup32_A https://publish.obsidian.md/mutwillab/Homepage/README

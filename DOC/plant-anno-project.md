@@ -95,13 +95,28 @@
 
 ## 预期成果和落地方案
 
+- 物种资源（拟南芥，水稻，大豆）
+  - [An Arabidopsis single-nucleus atlas decodes leaf senescence and nutrient allocation](https://www.cell.com/cell/fulltext/S0092-8674(25)00297-1) [db](https://db.cngb.org/genomics/datasets/GDS0000056)
+  - [A single-cell multi-omics atlas of rice](https://www.nature.com/articles/s41586-025-09251-0)
+  - [A spatially resolved multi-omic single-cell atlas of soybean development](https://www.cell.com/cell/fulltext/S0092-8674(24)01273-X) [atlas](https://soybean-atlas.com/)
+- 覆盖到那些组织类型（根茎叶）
+  - 6个维管植物的shoot [A unified cell atlas of vascular plants reveals celltype foundational genes and accelerates gene discovery]()
+- scPlantAnnotator流程搭建
+  - marker: sctype
+  - ref: singler
+  - cross-species: SAMap/SATURN
+  - enrich
+  - ?XSpeciesSpaner
+- 前面准备环节知识agent和skill的实现
+- 后面结果的整理和大模型api的接入
+
 ### ● 成果形式
 
 **第一阶段成果（比赛期间，两周内）**：
 
 | 成果类型 | 具体内容 | 可验收标准 |
 |:---|:---|:---|
-| **云平台部署** | PlantAnnotator | 支持上传h5ad文件，选择拟南芥根尖/叶片，自动返回HTML注释报告 |
+| **云平台部署** | scPlantAnnotator | 支持上传h5ad文件，选择拟南芥根尖/叶片，自动返回HTML注释报告 |
 | **数据库** | 植物标记基因库v1.0（拟南芥根尖+叶片） | 包含≥200条标注基因记录，附证据类型和文献来源 |
 | **Agent工作流** | LLM Agent自动注释流水线 | 端到端自动化，从输入到报告无需人工干预 |
 
