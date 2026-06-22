@@ -1,0 +1,478 @@
+---
+title: "单细胞 QC 过滤交互工具"
+subtitle: "植物单细胞数据 · 拖动滑块实时查看过滤效果"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-location: left
+    code-fold: false
+    df-print: paged
+execute:
+  eval: false
+---
+
+```{python}
+#| include: false
+# ============================================================
+# 仅在首次渲染时运行: 读取预计算的 QC 统计量
+# 实际使用时, 将 qc_stats_cells.csv 放在同目录下
+# ============================================================
+import pandas as pd
+import json
+
+# ── 读取预计算数据 ──
+cells = pd.read_csv('qc_stats_cells.csv', index_col=0)
+genes = pd.read_csv('qc_stats_genes.csv', index_col=0)
+
+# ── 转为 JSON 供 Observable JS 使用 ──
+cells_json = cells.to_dict(orient='records')
+genes_json = genes.to_dict(orient='records')
+
+# ── 计算各指标的范围 ──
+ranges = {}
+for col in cells.select_dtypes(include='number').columns:
+    q01, q99 = cells[col].quantile(0.01), cells[col].quantile(0.99)
+    ranges[col] = {
+        'min': float(cells[col].min()),
+        'max': float(cells[col].max()),
+        'q01': float(q01),
+        'q99': float(q99),
+        'default_low': float(q01),
+        'default_high': float(q99),
+    }
+
+# ── 基因过滤范围 ──
+gene_ranges = {
+    'n_cells': {
+        'min': int(genes['n_cells'].min()),
+        'max': int(genes['n_cells'].max()),
+        'default_low': 3,
+    },
+    'pct_cells': {
+        'min': float(genes['pct_cells'].min()),
+        'max': float(genes['pct_cells'].max()),
+        'default_low': 0.1,
+    }
+}
+
+total_cells = len(cells)
+total_genes = len(genes)
+```
+
+```{ojs}
+// ============================================================
+// Observable JS — 交互式 QC 过滤面板
+// ============================================================
+
+// ── 从 Python 单元格导入数据 ──
+cells = JSON.parse(`${JSON.stringify(python.cells_json)}`)
+genes = JSON.parse(`${JSON.stringify(python.genes_json)}`)
+ranges = JSON.parse(`${JSON.stringify(python.ranges)}`)
+gene_ranges = JSON.parse(`${JSON.stringify(python.gene_ranges)}`)
+total_cells = ${python.total_cells}
+total_genes = ${python.total_genes}
+
+// ── 辅助函数: 计算百分位数 ──
+function percentile(arr, p) {
+  const sorted = arr.slice().sort((a, b) => a - b)
+  const idx = (sorted.length - 1) * p / 100
+  const lower = Math.floor(idx)
+  const upper = Math.ceil(idx)
+  if (lower === upper) return sorted[lower]
+  return sorted[lower] * (upper - idx) + sorted[upper] * (idx - lower)
+}
+
+// ── 过滤函数 ──
+function applyFilters(cells, filters) {
+  return cells.filter(c => {
+    // n_genes 范围过滤
+    if (c.n_genes_by_counts < filters.n_genes[0] ||
+        c.n_genes_by_counts > filters.n_genes[1]) return false
+    // total_counts 范围过滤
+    if (c.total_counts < filters.total_counts[0] ||
+        c.total_counts > filters.total_counts[1]) return false
+    // pct_mito 上限过滤
+    if (c.pct_counts_mt > filters.pct_mito) return false
+    // pct_chloro 上限过滤
+    if (c.pct_counts_chloro > filters.pct_chloro) return false
+    return true
+  })
+}
+
+function applyGeneFilters(genes, minCells) {
+  return genes.filter(g => g.n_cells >= minCells)
+}
+
+// ── 默认阈值 ──
+const defaultFilters = {
+  n_genes: [ranges.n_genes_by_counts.q01, ranges.n_genes_by_counts.q99],
+  total_counts: [ranges.total_counts.q01, ranges.total_counts.q99],
+  pct_mito: 20,
+  pct_chloro: 20,
+  min_cells: 3,
+}
+
+// ── 响应式状态 ──
+const filters = Mutable(defaultFilters)
+const n_genes_range = filters.n_genes
+const total_counts_range = filters.total_counts
+const pct_mito_thresh = filters.pct_mito
+const pct_chloro_thresh = filters.pct_chloro
+const min_cells_thresh = filters.min_cells
+
+// ── 过滤结果 ──
+const filtered_cells = applyFilters(cells, filters)
+const filtered_genes = applyGeneFilters(genes, filters.min_cells)
+const n_removed = total_cells - filtered_cells.length
+const n_gene_removed = total_genes - filtered_genes.length
+const pct_removed = (n_removed / total_cells * 100).toFixed(1)
+const pct_gene_removed = (n_gene_removed / total_genes * 100).toFixed(1)
+```
+
+## 过滤概览
+
+```{ojs}
+// ── 概览卡片 ──
+const cards = html`
+<div style="display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0;">
+  <div style="flex: 1; min-width: 140px; padding: 16px; background: #e8f5e9; border-radius: 8px; text-align: center;">
+    <div style="font-size: 28px; font-weight: bold; color: #2e7d32;">${filtered_cells.length.toLocaleString()}</div>
+    <div style="font-size: 13px; color: #555;">保留细胞</div>
+  </div>
+  <div style="flex: 1; min-width: 140px; padding: 16px; background: #ffebee; border-radius: 8px; text-align: center;">
+    <div style="font-size: 28px; font-weight: bold; color: #c62828;">${n_removed.toLocaleString()}</div>
+    <div style="font-size: 13px; color: #555;">去除细胞 (${pct_removed}%)</div>
+  </div>
+  <div style="flex: 1; min-width: 140px; padding: 16px; background: #e3f2fd; border-radius: 8px; text-align: center;">
+    <div style="font-size: 28px; font-weight: bold; color: #1565c0;">${filtered_genes.length.toLocaleString()}</div>
+    <div style="font-size: 13px; color: #555;">保留基因</div>
+  </div>
+  <div style="flex: 1; min-width: 140px; padding: 16px; background: #fff3e0; border-radius: 8px; text-align: center;">
+    <div style="font-size: 28px; font-weight: bold; color: #e65100;">${n_gene_removed.toLocaleString()}</div>
+    <div style="font-size: 13px; color: #555;">去除基因 (${pct_gene_removed}%)</div>
+  </div>
+</div>`
+cards
+```
+
+---
+
+## 细胞过滤参数
+
+```{ojs}
+// ── n_genes 滑块 ──
+const n_genes_slider = html`
+<div style="margin: 20px 0; padding: 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong style="font-size: 15px;">🧬 每个细胞检测到的基因数 (n_genes_by_counts)</strong>
+    <span style="font-size: 14px; color: #666; background: #e8e8e8; padding: 2px 10px; border-radius: 12px;">
+      ${filters.n_genes[0].toLocaleString()} — ${filters.n_genes[1].toLocaleString()}
+    </span>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <span style="font-size: 12px; color: #888;">${ranges.n_genes_by_counts.min}</span>
+    <input type="range" min=${ranges.n_genes_by_counts.min} max=${ranges.n_genes_by_counts.max}
+           value=${filters.n_genes[0]} step=10
+           style="flex: 1;"
+           oninput="this.nextElementSibling.nextElementSibling.value = this.value;
+                    filters.n_genes = [Math.min(+this.value, +this.nextElementSibling.value), Math.max(+this.value, +this.nextElementSibling.value)]" />
+    <input type="range" min=${ranges.n_genes_by_counts.min} max=${ranges.n_genes_by_counts.max}
+           value=${filters.n_genes[1]} step=10
+           style="flex: 1;"
+           oninput="this.previousElementSibling.nextElementSibling.value = this.value;
+                    filters.n_genes = [Math.min(+this.previousElementSibling.value, +this.value), Math.max(+this.previousElementSibling.value, +this.value)]" />
+    <span style="font-size: 12px; color: #888;">${ranges.n_genes_by_counts.max}</span>
+  </div>
+</div>`
+n_genes_slider
+```
+
+```{ojs}
+// ── total_counts 滑块 ──
+const total_counts_slider = html`
+<div style="margin: 20px 0; padding: 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong style="font-size: 15px;">📊 每个细胞 UMI 总数 (total_counts)</strong>
+    <span style="font-size: 14px; color: #666; background: #e8e8e8; padding: 2px 10px; border-radius: 12px;">
+      ${filters.total_counts[0].toLocaleString()} — ${filters.total_counts[1].toLocaleString()}
+    </span>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <span style="font-size: 12px; color: #888;">${ranges.total_counts.min}</span>
+    <input type="range" min=${ranges.total_counts.min} max=${ranges.total_counts.max}
+           value=${filters.total_counts[0]} step=100
+           style="flex: 1;"
+           oninput="this.nextElementSibling.nextElementSibling.value = this.value;
+                    filters.total_counts = [Math.min(+this.value, +this.nextElementSibling.value), Math.max(+this.value, +this.nextElementSibling.value)]" />
+    <input type="range" min=${ranges.total_counts.min} max=${ranges.total_counts.max}
+           value=${filters.total_counts[1]} step=100
+           style="flex: 1;"
+           oninput="this.previousElementSibling.nextElementSibling.value = this.value;
+                    filters.total_counts = [Math.min(+this.previousElementSibling.value, +this.value), Math.max(+this.previousElementSibling.value, +this.value)]" />
+    <span style="font-size: 12px; color: #888;">${ranges.total_counts.max}</span>
+  </div>
+</div>`
+total_counts_slider
+```
+
+```{ojs}
+// ── pct_mito 滑块 ──
+const pct_mito_slider = html`
+<div style="margin: 20px 0; padding: 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong style="font-size: 15px;">🧪 线粒体占比上限 (pct_mito)</strong>
+    <span style="font-size: 14px; color: #666; background: #e8e8e8; padding: 2px 10px; border-radius: 12px;">
+      ≤ ${filters.pct_mito}%
+    </span>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <span style="font-size: 12px; color: #888;">0%</span>
+    <input type="range" min=0 max=100 value=${filters.pct_mito} step=0.5
+           style="flex: 1;"
+           oninput="this.nextElementSibling.nextElementSibling.innerText = this.value + '%';
+                    filters.pct_mito = +this.value" />
+    <span style="font-size: 14px; font-weight: bold; color: #c62828; min-width: 50px; text-align: right;">${filters.pct_mito}%</span>
+  </div>
+</div>`
+pct_mito_slider
+```
+
+```{ojs}
+// ── pct_chloro 滑块 ──
+const pct_chloro_slider = html`
+<div style="margin: 20px 0; padding: 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong style="font-size: 15px;">🌿 叶绿体占比上限 (pct_chloro)</strong>
+    <span style="font-size: 14px; color: #666; background: #e8e8e8; padding: 2px 10px; border-radius: 12px;">
+      ≤ ${filters.pct_chloro}%
+    </span>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <span style="font-size: 12px; color: #888;">0%</span>
+    <input type="range" min=0 max=100 value=${filters.pct_chloro} step=0.5
+           style="flex: 1;"
+           oninput="this.nextElementSibling.nextElementSibling.innerText = this.value + '%';
+                    filters.pct_chloro = +this.value" />
+    <span style="font-size: 14px; font-weight: bold; color: #2e7d32; min-width: 50px; text-align: right;">${filters.pct_chloro}%</span>
+  </div>
+</div>`
+pct_chloro_slider
+```
+
+---
+
+## 基因过滤参数
+
+```{ojs}
+// ── 基因过滤: 至少在 N 个细胞中表达 ──
+const min_cells_slider = html`
+<div style="margin: 20px 0; padding: 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong style="font-size: 15px;">🎯 基因至少在 N 个细胞中表达 (min_cells)</strong>
+    <span style="font-size: 14px; color: #666; background: #e8e8e8; padding: 2px 10px; border-radius: 12px;">
+      ≥ ${filters.min_cells}
+    </span>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center;">
+    <span style="font-size: 12px; color: #888;">${gene_ranges.n_cells.min}</span>
+    <input type="range" min=${gene_ranges.n_cells.min} max=${Math.min(gene_ranges.n_cells.max, 100)} value=${filters.min_cells} step=1
+           style="flex: 1;"
+           oninput="this.nextElementSibling.innerText = this.value;
+                    filters.min_cells = +this.value" />
+    <span style="font-size: 14px; font-weight: bold; color: #1565c0; min-width: 30px; text-align: right;">${filters.min_cells}</span>
+  </div>
+</div>`
+min_cells_slider
+```
+
+---
+
+## 可视化
+
+```{ojs}
+// ── Plotly 直方图: n_genes_by_counts ──
+function makeHistogram(data, key, label, color, filterKey, filterRange) {
+  const binCount = 50
+  const values = data.map(d => d[key])
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const binWidth = (max - min) / binCount
+  const bins = Array.from({length: binCount}, (_, i) => ({
+    x0: min + i * binWidth,
+    x1: min + (i + 1) * binWidth,
+    count: 0,
+  }))
+  for (const v of values) {
+    const idx = Math.min(Math.floor((v - min) / binWidth), binCount - 1)
+    bins[idx].count++
+  }
+
+  const filteredValues = data.filter(d => {
+    if (filterKey === 'n_genes_by_counts') {
+      return d[key] >= filterRange[0] && d[key] <= filterRange[1]
+    }
+    return true
+  }).map(d => d[key])
+
+  const filteredBins = Array.from({length: binCount}, (_, i) => ({
+    x0: min + i * binWidth,
+    x1: min + (i + 1) * binWidth,
+    count: 0,
+  }))
+  for (const v of filteredValues) {
+    const idx = Math.min(Math.floor((v - min) / binWidth), binCount - 1)
+    filteredBins[idx].count++
+  }
+
+  return {
+    data: [
+      {
+        type: 'bar',
+        x: bins.map(b => (b.x0 + b.x1) / 2),
+        y: bins.map(b => b.count),
+        name: '去除',
+        marker: {color: 'rgba(198, 40, 40, 0.5)', line: {width: 0}},
+        hovertemplate: '%{y} 细胞<extra></extra>',
+      },
+      {
+        type: 'bar',
+        x: filteredBins.map(b => (b.x0 + b.x1) / 2),
+        y: filteredBins.map(b => b.count),
+        name: '保留',
+        marker: {color: 'rgba(46, 125, 50, 0.6)', line: {width: 0}},
+        hovertemplate: '%{y} 细胞<extra></extra>',
+      },
+    ],
+    layout: {
+      title: {text: label, font: {size: 14}},
+      barmode: 'overlay',
+      xaxis: {title: key, zeroline: false},
+      yaxis: {title: '细胞数'},
+      height: 280,
+      margin: {t: 40, r: 20, b: 40, l: 50},
+      legend: {orientation: 'h', y: 1.1},
+      hovermode: 'x unified',
+      bargap: 0.05,
+    },
+    config: {responsive: true, displayModeBar: false},
+  }
+}
+
+function makePctHistogram(data, key, label, color, threshold) {
+  const binCount = 50
+  const values = data.map(d => d[key])
+  const maxVal = Math.max(...values)
+  const binWidth = maxVal / binCount
+  const bins = Array.from({length: binCount}, (_, i) => ({
+    x0: i * binWidth,
+    x1: (i + 1) * binWidth,
+    count: 0,
+  }))
+  for (const v of values) {
+    const idx = Math.min(Math.floor(v / binWidth), binCount - 1)
+    bins[idx].count++
+  }
+
+  const filteredValues = data.filter(d => d[key] <= threshold).map(d => d[key])
+  const filteredBins = Array.from({length: binCount}, (_, i) => ({
+    x0: i * binWidth,
+    x1: (i + 1) * binWidth,
+    count: 0,
+  }))
+  for (const v of filteredValues) {
+    const idx = Math.min(Math.floor(v / binWidth), binCount - 1)
+    filteredBins[idx].count++
+  }
+
+  return {
+    data: [
+      {
+        type: 'bar',
+        x: bins.map(b => (b.x0 + b.x1) / 2),
+        y: bins.map(b => b.count),
+        name: '去除',
+        marker: {color: 'rgba(198, 40, 40, 0.5)', line: {width: 0}},
+        hovertemplate: '%{y} 细胞<extra></extra>',
+      },
+      {
+        type: 'bar',
+        x: filteredBins.map(b => (b.x0 + b.x1) / 2),
+        y: filteredBins.map(b => b.count),
+        name: '保留',
+        marker: {color: 'rgba(46, 125, 50, 0.6)', line: {width: 0}},
+        hovertemplate: '%{y} 细胞<extra></extra>',
+      },
+    ],
+    layout: {
+      title: {text: label, font: {size: 14}},
+      barmode: 'overlay',
+      xaxis: {title: key, zeroline: false},
+      yaxis: {title: '细胞数'},
+      shapes: [{
+        type: 'line',
+        x0: threshold, x1: threshold,
+        y0: 0, y1: 1,
+        yref: 'paper',
+        line: {color: '#c62828', width: 2, dash: 'dash'},
+      }],
+      height: 280,
+      margin: {t: 40, r: 20, b: 40, l: 50},
+      legend: {orientation: 'h', y: 1.1},
+      hovermode: 'x unified',
+      bargap: 0.05,
+    },
+    config: {responsive: true, displayModeBar: false},
+  }
+}
+```
+
+```{ojs}
+// ── 绘制四个直方图 ──
+const plot1 = Plotly.plot(
+  document.getElementById('plot-n-genes'),
+  makeHistogram(cells, 'n_genes_by_counts', '🧬 每个细胞基因数分布', '#2e7d32', 'n_genes_by_counts', filters.n_genes)
+)
+const plot2 = Plotly.plot(
+  document.getElementById('plot-total-counts'),
+  makeHistogram(cells, 'total_counts', '📊 每个细胞 UMI 分布', '#1565c0', 'total_counts', filters.total_counts)
+)
+const plot3 = Plotly.plot(
+  document.getElementById('plot-pct-mito'),
+  makePctHistogram(cells, 'pct_counts_mt', '🧪 线粒体占比分布', '#c62828', filters.pct_mito)
+)
+const plot4 = Plotly.plot(
+  document.getElementById('plot-pct-chloro'),
+  makePctHistogram(cells, 'pct_counts_chloro', '🌿 叶绿体占比分布', '#2e7d32', filters.pct_chloro)
+)
+```
+
+<div id="plot-n-genes" style="height: 300px; margin-bottom: 16px;"></div>
+<div id="plot-total-counts" style="height: 300px; margin-bottom: 16px;"></div>
+<div id="plot-pct-mito" style="height: 300px; margin-bottom: 16px;"></div>
+<div id="plot-pct-chloro" style="height: 300px; margin-bottom: 16px;"></div>
+
+---
+
+## 被去除细胞列表
+
+```{ojs}
+// ── 被去除的细胞 barcode 列表 ──
+const removed_barcodes = cells
+  .filter(c => !filtered_cells.includes(c))
+  .map(c => c.cell_barcode || Object.values(c)[0])
+
+const removedTable = html`
+<div style="margin: 16px 0;">
+  <details>
+    <summary style="cursor: pointer; font-weight: bold; color: #c62828;">
+      查看被去除的细胞 (${removed_barcodes.length} 个)
+    </summary>
+    <div style="margin-top: 8px; max-height: 300px; overflow-y: auto; background: #f5f5f5; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 12px;">
+      ${removed_barcodes.map(b => html`<div>${b}</div>`)}
+    </div>
+  </details>
+</div>`
+removedTable
+```
+

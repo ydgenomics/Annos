@@ -79,7 +79,7 @@
 - 2026|dl [跨物种注释](https://github.com/illuminate6060/CellBLASTer) 
 - 2026 单细胞 & 空间组学新神器 CSFeatures：精准锁定细胞类型特异性特征 https://mp.weixin.qq.com/s/VYO3jfiWUsM1zLryYw0Gsg
 - 2026 scMarkerGene：细胞类型特异性标记基因识别 https://mp.weixin.qq.com/s/Dmd5ngV_OK4IKs3Lpdim5A
-- 2019 singleR [使用singleR基于自建数据库来自动化注释单细胞转录组亚群](https://mp.weixin.qq.com/s/GpOxe4WLIrBOjbdH5gfyOQ) [python单细胞学习笔记-day8(singler自动注释)](https://mp.weixin.qq.com/s/EofelV1LY8sqKDRBnRNj9A)
+- 2019 singleR [使用singleR基于自建数据库来自动化注释单细胞转录组亚群](https://mp.weixin.qq.com/s/GpOxe4WLIrBOjbdH5gfyOQ) [python单细胞学习笔记-day8(singler自动注释)](https://mp.weixin.qq.com/s/EofelV1LY8sqKDRBnRNj9A) [singler-py github](https://github.com/SingleR-inc/singler-py)
 - 2023 sctype [单细胞全自动注释篇(四)——ScType](https://mp.weixin.qq.com/s/hKBiZCHwDdoJOk0YChbtMA)
 - Online website for annotation
   - 2026 [scPlantAnnotate](https://scplantannotate.missouri.edu/)
