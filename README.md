@@ -48,6 +48,7 @@
 
 
 ## References
+- [python单细胞流程-注释](https://mp.weixin.qq.com/s/qKl-Eiwt9JMWjMyryX1_pg)
 - [Annotating cell clusters in single cell RNA-seq datasets](https://pluto.bio/resources/Learning%20Series/annotating-clusters-in-scrnaseq)
 - [List of annotation tools and approaches](https://airtable.com/appMd0h4vP7gzQaeK/shrgmvY3ZvswENjkJ/tblgv3JRYlbD34DYD)
 - [OMG Browser (Orthologous Marker Groups Browser)](https://www.omicsempower.com/blog/plant-single-cell-cell-type-annotation-omg-browser/)
@@ -90,6 +91,7 @@
 - 2021|Nat.biot 大型单细胞图谱如何整合和注释：scArches深度学习工具介绍 https://mp.weixin.qq.com/s/qpB2sTwJSDE41vUtWJOBIQ
 - 2024 [单细胞数据分析 | SingleR、SCINA、scPred三种不同原理的单细胞自动注释工具的使用及解读](https://mp.weixin.qq.com/s/t4WGqy5UfLtk0oaQIf_QMg)
 - [Cell_BLAST: 通过深度生成模型像做基因BLAST一样检索和注释细胞类型](https://mp.weixin.qq.com/s/6BH1C4IdzH5Pf9gRtZQukQ)
+- [SATURN](https://github.com/snap-stanford/SATURN/tree/main)
 
 ### 数据库
 - 2025|Molecular Plant | PlantscRNAdb 4.0上线：首次建立植物细胞“通用语言”，破解跨物种识别难题 [wechat](https://mp.weixin.qq.com/s/rC7RDZZpFDyaDa8BED7YNw) [PCmaster_anno](https://github.com/bioinplant/PCmaster) [HCMarker](https://github.com/daidai905/HCMarker)

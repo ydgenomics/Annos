@@ -1,0 +1,36 @@
+query_h5ad
+query_pep
+query_species
+cluster_key
+batch_key
+reduction_key
+
+# preprocess
+padj_value
+n_topgenes
+
+# markers
+celltype_markers_csv
+run_sctype
+
+# gsea
+query_gmt
+query_eggnog
+gsea_padj_value
+
+# XSpeciesSpaner
+
+# singler & scarches
+ref_h5ad
+ref_key
+
+# samap & saturn
+ref2_h5ad
+ref2_key
+ref2_pep
+
+
+# scplantannotate
+
+
+
